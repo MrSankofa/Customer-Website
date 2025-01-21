@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -35,6 +36,36 @@ public class CustomerController {
     return "new-customer";
   }
 
+  @GetMapping("/edit/{id}")
+  public ModelAndView showEditCustomerPage(@PathVariable(name ="id") Long id) {
+    ModelAndView modelAndView = new ModelAndView("edit-customer");
+    Customer customer = customerService.getCustomer(id);
+
+    modelAndView.addObject("customer", customer);
+
+    return modelAndView;
+  }
+
+  @PostMapping("/update/{id}")
+  public String updateCustomer(@PathVariable(name = "id") Long id, @ModelAttribute("customer") Customer customer, Model model) {
+
+    if (!id.equals(customer.getId())) {
+      model.addAttribute("message",
+          "Cannot update, customer id " + customer.getId()
+              + " doesn't match id to update: " + id + ".");
+      return "error-page";
+    }
+
+    customerService.saveCustomer(customer);
+    return "redirect:/";
+  }
+
+  @RequestMapping("/delete/{id}")
+  public String deleteCustomer(@PathVariable(name = "id") Long id) {
+    customerService.deleteCustomer(id);
+    return "redirect:/";
+  }
+
   @GetMapping("/customers")
   @ResponseBody
   public ResponseEntity<List<Customer>> getCustomers() {
@@ -48,11 +79,11 @@ public class CustomerController {
     return ResponseEntity.ok(customerService.saveCustomer(customer));
   }
 
-  @PostMapping(value = "/save")
+  @PostMapping("/save")
   // how to communicate HTML to java
   public String saveCustomer(@ModelAttribute("customer")  Customer customer) {
     customerService.saveCustomer(customer);
-    return "redirect:/customers/" + customer.getId();
+    return "redirect:/";
   }
 
   @PostMapping("/batch-save")
@@ -62,4 +93,5 @@ public class CustomerController {
     return ResponseEntity.ok( customerService.saveAllCustomer(customers));
 
   }
+
 }
