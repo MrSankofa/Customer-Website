@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ public class CustomerController {
   CustomerService customerService;
 
   @GetMapping("/")
+  // how to communicate java to HTML
   public String viewHomePage(Model model) {
 
     final List<Customer> customers = customerService.findAllCustomers();
@@ -27,6 +25,14 @@ public class CustomerController {
     model.addAttribute("customers", customers);
 
     return "index";
+  }
+
+  @GetMapping("/new")
+  public String showNewCustomerPage(Model model) {
+    Customer customer = new Customer();
+    model.addAttribute("customer", customer);
+
+    return "new-customer";
   }
 
   @GetMapping("/customers")
@@ -39,8 +45,14 @@ public class CustomerController {
   @PostMapping("/customer")
   @ResponseBody
   public ResponseEntity<Customer> createCustomer(@RequestBody final Customer customer) {
-
     return ResponseEntity.ok(customerService.saveCustomer(customer));
+  }
+
+  @PostMapping(value = "/save")
+  // how to communicate HTML to java
+  public String saveCustomer(@ModelAttribute("customer")  Customer customer) {
+    customerService.saveCustomer(customer);
+    return "redirect:/customers/" + customer.getId();
   }
 
   @PostMapping("/batch-save")
