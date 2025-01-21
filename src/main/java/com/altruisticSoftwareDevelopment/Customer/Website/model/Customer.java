@@ -14,10 +14,17 @@ import lombok.*;
 public class Customer {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String fullName;
   private String emailAddress;
   private Integer age;
   private String address;
+
+  @OneToOne
+  @JoinColumn(name = "financeCompany_id")
+  private FinanceCompany financeCompany;
+
+
+
 }
