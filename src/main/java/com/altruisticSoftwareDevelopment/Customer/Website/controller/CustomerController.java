@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -20,6 +18,7 @@ public class CustomerController {
   CustomerService customerService;
 
   @GetMapping("/")
+  // how to communicate java to HTML
   public String viewHomePage(Model model) {
 
     final List<Customer> customers = customerService.findAllCustomers();
@@ -27,6 +26,44 @@ public class CustomerController {
     model.addAttribute("customers", customers);
 
     return "index";
+  }
+
+  @GetMapping("/new")
+  public String showNewCustomerPage(Model model) {
+    Customer customer = new Customer();
+    model.addAttribute("customer", customer);
+
+    return "new-customer";
+  }
+
+  @GetMapping("/edit/{id}")
+  public ModelAndView showEditCustomerPage(@PathVariable(name ="id") Long id) {
+    ModelAndView modelAndView = new ModelAndView("edit-customer");
+    Customer customer = customerService.getCustomer(id);
+
+    modelAndView.addObject("customer", customer);
+
+    return modelAndView;
+  }
+
+  @PostMapping("/update/{id}")
+  public String updateCustomer(@PathVariable(name = "id") Long id, @ModelAttribute("customer") Customer customer, Model model) {
+
+    if (!id.equals(customer.getId())) {
+      model.addAttribute("message",
+          "Cannot update, customer id " + customer.getId()
+              + " doesn't match id to update: " + id + ".");
+      return "error-page";
+    }
+
+    customerService.saveCustomer(customer);
+    return "redirect:/";
+  }
+
+  @RequestMapping("/delete/{id}")
+  public String deleteCustomer(@PathVariable(name = "id") Long id) {
+    customerService.deleteCustomer(id);
+    return "redirect:/";
   }
 
   @GetMapping("/customers")
@@ -39,8 +76,14 @@ public class CustomerController {
   @PostMapping("/customer")
   @ResponseBody
   public ResponseEntity<Customer> createCustomer(@RequestBody final Customer customer) {
-
     return ResponseEntity.ok(customerService.saveCustomer(customer));
+  }
+
+  @PostMapping("/save")
+  // how to communicate HTML to java
+  public String saveCustomer(@ModelAttribute("customer")  Customer customer) {
+    customerService.saveCustomer(customer);
+    return "redirect:/";
   }
 
   @PostMapping("/batch-save")
@@ -50,4 +93,5 @@ public class CustomerController {
     return ResponseEntity.ok( customerService.saveAllCustomer(customers));
 
   }
+
 }
