@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
+@ToString(exclude = "id")
 public class Customer {
 
   @Id

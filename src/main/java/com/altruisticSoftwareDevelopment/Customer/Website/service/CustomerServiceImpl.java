@@ -4,25 +4,36 @@ package com.altruisticSoftwareDevelopment.Customer.Website.service;
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
 import com.altruisticSoftwareDevelopment.Customer.Website.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CustomerServiceImpl implements CustomerService{
 
   // constructor injection thanks to @RequiredArgsConstructor
+  //  private final CustomerRepository customerRepository;
+
+  // Constructor-injected dependency
   private final CustomerRepository customerRepository;
 
+  // Manual constructor to handle dependency injection
+  public CustomerServiceImpl(CustomerRepository customerRepository) {
+    this.customerRepository = customerRepository;
+  }
+
+
   @Override
-  public List<Customer> getAllCustomers() {
+  @Transactional
+  public List<Customer> findAllCustomers() {
     return customerRepository.findAll();
   }
 
   @Override
+  @Transactional
   public Customer saveCustomer(Customer customer) {
     return customerRepository.save(customer);
   }
@@ -33,12 +44,19 @@ public class CustomerServiceImpl implements CustomerService{
   }
 
   @Override
+  @Transactional
   public void deleteCustomer(Long id) {
     customerRepository.deleteById(id);
   }
 
   @Override
+  @Transactional
   public List<Customer> saveAllCustomer(List<Customer> customers) {
     return customerRepository.saveAll(customers);
+  }
+
+  @Override
+  public void deleteAllCustomers() {
+    customerRepository.deleteAll();
   }
 }
