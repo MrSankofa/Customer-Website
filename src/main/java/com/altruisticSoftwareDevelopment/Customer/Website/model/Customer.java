@@ -16,15 +16,14 @@ public class Customer {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String fullName;
   private String emailAddress;
   private Integer age;
   private String address;
 
-  @OneToOne
-  @JoinColumn(name = "financeCompany_id")
+  @OneToOne(cascade = CascadeType.ALL) // Cascade operations and enable orphan removal
+  @JoinColumn(name = "finance_company_id", referencedColumnName = "id")
   private FinanceCompany financeCompany;
-
-
 
 }
