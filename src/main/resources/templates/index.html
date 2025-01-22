@@ -40,8 +40,9 @@
             <td th:text="${customer.emailAddress}">Email Address</td>
             <td th:text="${customer.age}">Age</td>
             <td th:text="${customer.address}">Address</td>
-            <td th:text="${customer.financeCompany}">Finance Company</td>
+            <td th:text="${customer.financeCompany?.getCompanyName() ?: 'No Finance Company'}">Finance Company</td>
             <td><!-- actions -->
+                <a th:href="@{'/financeCompany/assign/' + ${customer.id}}">Assign</a>
                 <a th:href="@{'/edit/' + ${customer.id}}">Edit</a>
                 <a th:href="@{'/delete/' + ${customer.id}}">Delete</a>
             </td>
