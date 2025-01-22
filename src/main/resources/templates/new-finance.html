@@ -14,7 +14,7 @@
     and on submission it will hit the `/save` endpoint using the
     POST method.
     -->
-    <form action="#" th:action="@{'/save/finance'}"
+    <form action="#" th:action="@{'/financeCompany/save'}"
           th:object="${financeCompany}" method="post">
         <!--
         These input fields are used to collect the information
@@ -29,7 +29,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Email Address:</td>
+                <td>Loan Capcipty:</td>
                 <td>
                     <input type="number" th:field="*{loanCapacity}"
                            required/>

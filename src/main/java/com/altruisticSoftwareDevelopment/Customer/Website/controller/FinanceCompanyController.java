@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -24,6 +26,14 @@ public class FinanceCompanyController {
 
   @Autowired
   private CustomerService customerService;
+
+  @GetMapping("/new")
+  public String newFinanceCompany(Model model) {
+    FinanceCompany financeCompany = new FinanceCompany();
+
+    model.addAttribute("financeCompany", financeCompany);
+    return "new-finance";
+  }
 
   @GetMapping("/assign/{id}")
   public ModelAndView showNewFinancePage(@PathVariable(name = "id") Long id) {
@@ -56,13 +66,25 @@ public class FinanceCompanyController {
     }
   }
 
-  @PostMapping
-  @ResponseBody
-  public ResponseEntity<?> saveFinanceCompany(@Valid @RequestBody FinanceCompany financeCompany) {
+  @PostMapping("/save")
+  public String saveFinanceCompany(
+      @Valid @ModelAttribute("financeCompany") FinanceCompany financeCompany,
+      BindingResult bindingResult,
+      RedirectAttributes redirectAttributes) {
+
+    if (bindingResult.hasErrors()) {
+      // If validation errors exist, redirect back with an error message
+      redirectAttributes.addFlashAttribute("errorMessage", "Failed to save the finance company. Please check your input.");
+      return "redirect:/"; // Adjust to the appropriate page where the form is shown
+    }
+
     try {
-      return ResponseEntity.status(HttpStatus.CREATED).body(financeCompanyService.saveFinanceCompany(financeCompany));
+      financeCompanyService.saveFinanceCompany(financeCompany);
+      redirectAttributes.addFlashAttribute("successMessage", "Finance company saved successfully.");
+      return "redirect:/"; // Redirect to the index page or wherever appropriate
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
+      redirectAttributes.addFlashAttribute("errorMessage", "An error occurred: " + e.getMessage());
+      return "redirect:/"; // Redirect to the same page with the error message
     }
   }
 

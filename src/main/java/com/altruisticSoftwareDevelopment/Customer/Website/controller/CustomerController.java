@@ -28,7 +28,7 @@ public class CustomerController {
     return "index";
   }
 
-  @GetMapping("/new")
+  @GetMapping("/new/customer")
   public String showNewCustomerPage(Model model) {
     Customer customer = new Customer();
     model.addAttribute("customer", customer);
