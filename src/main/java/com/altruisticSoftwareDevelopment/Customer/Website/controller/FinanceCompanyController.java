@@ -31,7 +31,10 @@ public class FinanceCompanyController {
     FinanceCompany financeCompany = new FinanceCompany();
 
     Customer customer = customerService.getCustomer(id);
+    List<FinanceCompany> financeCompanies = financeCompanyService.findAllFinanceCompanies();
     financeCompany.setCustomer(customer);
+    modelAndView.addObject("financeCompanies", financeCompanies);
+    modelAndView.addObject("targetCustomer", customer);
     modelAndView.addObject("financeCompany", financeCompany);
     return modelAndView;
   }
