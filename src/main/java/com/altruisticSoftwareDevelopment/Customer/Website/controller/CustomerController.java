@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
+@RequestMapping("/customer")
 public class CustomerController {
 
   @Autowired
@@ -28,7 +29,7 @@ public class CustomerController {
     return "index";
   }
 
-  @GetMapping("/new/customer")
+  @GetMapping("/new")
   public String showNewCustomerPage(Model model) {
     Customer customer = new Customer();
     model.addAttribute("customer", customer);
@@ -46,7 +47,7 @@ public class CustomerController {
     return modelAndView;
   }
 
-  @GetMapping("/customer/assign/create/{id}")
+  @GetMapping("/assign/create/{id}")
   public ModelAndView showCreateCustomerPage(@PathVariable(name ="id") Long id) {
     ModelAndView modelAndView = new ModelAndView("assign-customer");
 
