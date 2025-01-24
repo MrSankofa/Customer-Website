@@ -14,7 +14,7 @@
     before it was added to the model, their values populate the fields
     here. The content of the fields then POST to the update endpoint.
     -->
-    <form action="#" th:action="@{'/update/' + ${customer.id}}"
+    <form action="#" th:action="@{'/customer/update/' + ${customer.id}}"
           th:object="${customer}" method="post">
         <table border="0" cellpadding="10">
             <tr>

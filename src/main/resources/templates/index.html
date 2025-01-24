@@ -8,9 +8,9 @@
 <div align="center">
     <h1>Customer List</h1>
     <br/><br/>
-    <a th:href="@{/new/customer}">Add New Customer</a>
-    <a th:href="@{/company/new}">Add New Finance</a>
-    <a th:href="@{/company/list}">View Companies</a>
+    <a th:href="@{/customer/new/page}">Add New Customer</a>
+    <a th:href="@{/company/new/page}">Add New Finance</a>
+    <a th:href="@{/company/page}">View Companies</a>
     <table border="1" cellpadding="10">
         <thead>
         <tr>
@@ -43,9 +43,9 @@
             <td th:text="${customer.address}">Address</td>
             <td th:text="${customer.financeCompany?.getCompanyName() ?: 'No Finance Company'}">Finance Company</td>
             <td><!-- actions -->
-                <a th:href="@{'/company/assign/create' + ${customer.getId()}}">Assign</a>
-                <a th:href="@{'/company/assign/edit/' + ${customer.getId()}}">Edit</a>
-                <a th:href="@{'/company/assign/delete/' + ${customer.getId()}}">Delete</a>
+                <a th:href="@{'/company/assign/page' + ${customer.getId()}}">Assign</a>
+                <a th:href="@{'/company/edit/page' + ${customer.getId()}}">Edit</a>
+                <a th:href="@{'/company/delete' + ${customer.getId()}}">Delete</a>
             </td>
         </tr>
         </tbody>
