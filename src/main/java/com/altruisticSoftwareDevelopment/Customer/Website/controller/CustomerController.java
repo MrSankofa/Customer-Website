@@ -18,7 +18,7 @@ public class CustomerController {
   @Autowired
   CustomerService customerService;
 
-  @GetMapping("/")
+  @GetMapping("/page")
   // how to communicate java to HTML
   public String viewHomePage(Model model) {
 
@@ -29,7 +29,7 @@ public class CustomerController {
     return "index";
   }
 
-  @GetMapping("/new")
+  @GetMapping("/new/page")
   public String showNewCustomerPage(Model model) {
     Customer customer = new Customer();
     model.addAttribute("customer", customer);
@@ -76,14 +76,14 @@ public class CustomerController {
     return "redirect:/";
   }
 
-  @GetMapping("/customers")
+  @GetMapping
   @ResponseBody
   public ResponseEntity<List<Customer>> getCustomers() {
 
     return ResponseEntity.ok(customerService.findAllCustomers());
   }
 
-  @PostMapping("/customer")
+  @PostMapping
   @ResponseBody
   public ResponseEntity<Customer> createCustomer(@RequestBody final Customer customer) {
     return ResponseEntity.ok(customerService.saveCustomer(customer));

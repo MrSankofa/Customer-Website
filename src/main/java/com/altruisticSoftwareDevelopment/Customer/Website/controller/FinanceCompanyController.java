@@ -27,7 +27,7 @@ public class FinanceCompanyController {
   @Autowired
   private CustomerService customerService;
 
-  @GetMapping("/new")
+  @GetMapping("/new/page")
   public String showNewFinancePage(Model model) {
     FinanceCompany financeCompany = new FinanceCompany();
 
@@ -46,7 +46,7 @@ public class FinanceCompanyController {
     return modelAndView;
   }
 
-  @GetMapping("/list")
+  @GetMapping("/page")
   public String showFinanceListPage(Model model) {
     List<FinanceCompany> companies = financeCompanyService.findAllFinanceCompanies();
 

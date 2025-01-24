@@ -10,6 +10,7 @@
     <br/><br/>
     <a th:href="@{/customer/new}">Add New Customer</a>
     <a th:href="@{/company/new}">Add New Finance</a>
+    <a th:href="@{/customer/page}">View Customers</a>
 
 
     <table border="1" cellpadding="10">
@@ -40,9 +41,9 @@
             <td th:text="${company.loanCapacity}">Loan Capacity</td>
             <td th:text="${company.customer}">Assigned Customer</td>
             <td><!-- actions -->
-                <a th:href="@{'/customer/assign/create' + ${company.getId()}}">Assign</a>
-                <a th:href="@{'/customer/assign/edit/' + ${company.getId()}}">Edit</a>
-                <a th:href="@{'/customer/assign/delete/' + ${company.getId()}}">Delete</a>
+                <a th:href="@{'/customer/assign/page' + ${company.getId()}}">Assign</a>
+                <a th:href="@{'/customer/edit/page' + ${company.getId()}}">Edit</a>
+                <a th:href="@{'/customer/delete' + ${company.getId()}}">Delete</a>
             </td>
         </tr>
         </tbody>
