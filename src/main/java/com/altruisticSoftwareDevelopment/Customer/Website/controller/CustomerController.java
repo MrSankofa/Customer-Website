@@ -28,7 +28,7 @@ public class CustomerController {
     return "index";
   }
 
-  @GetMapping("/new")
+  @GetMapping("/new/customer")
   public String showNewCustomerPage(Model model) {
     Customer customer = new Customer();
     model.addAttribute("customer", customer);
@@ -43,6 +43,15 @@ public class CustomerController {
 
     modelAndView.addObject("customer", customer);
 
+    return modelAndView;
+  }
+
+  @GetMapping("/customer/assign/create/{id}")
+  public ModelAndView showCreateCustomerPage(@PathVariable(name ="id") Long id) {
+    ModelAndView modelAndView = new ModelAndView("assign-customer");
+
+    // TODO: get all customers
+    // TODO: add an attribute for all customers for the select element options
     return modelAndView;
   }
 

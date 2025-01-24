@@ -2,15 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>Customer Manager</title>
+    <title>Finance Company Manager</title>
 </head>
 <body>
 <div align="center">
-    <h1>Customer List</h1>
+    <h1>Company List</h1>
     <br/><br/>
     <a th:href="@{/new/customer}">Add New Customer</a>
     <a th:href="@{/company/new}">Add New Finance</a>
-    <a th:href="@{/company/list}">View Companies</a>
+
+
     <table border="1" cellpadding="10">
         <thead>
         <tr>
@@ -19,12 +20,10 @@
             Customer details and then the other rows will be filled by
             the data that you send back in the Model object.
             -->
-            <th>Customer ID</th>
-            <th>Full Name</th>
-            <th>Email Address</th>
-            <th>Age</th>
-            <th>Address</th>
-            <th>Finance Company</th>
+            <th>Company ID</th>
+            <th>Name</th>
+            <th>Loan Capacity</th>
+            <th>Customer</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -35,17 +34,15 @@
          to match your column names.
         -->
         <tbody>
-        <tr th:each="customer : ${customers}">
-            <td th:text="${customer.id}">Customer ID</td>
-            <td th:text="${customer.fullName}">Full Name</td>
-            <td th:text="${customer.emailAddress}">Email Address</td>
-            <td th:text="${customer.age}">Age</td>
-            <td th:text="${customer.address}">Address</td>
-            <td th:text="${customer.financeCompany?.getCompanyName() ?: 'No Finance Company'}">Finance Company</td>
+        <tr th:each="company : ${companies}">
+            <td th:text="${company.id}">Customer ID</td>
+            <td th:text="${company.companyName}">Name</td>
+            <td th:text="${company.loanCapacity}">Loan Capacity</td>
+            <td th:text="${company.customer}">Assigned Customer</td>
             <td><!-- actions -->
-                <a th:href="@{'/company/assign/create' + ${customer.getId()}}">Assign</a>
-                <a th:href="@{'/company/assign/edit/' + ${customer.getId()}}">Edit</a>
-                <a th:href="@{'/company/assign/delete/' + ${customer.getId()}}">Delete</a>
+                <a th:href="@{'/customer/assign/create' + ${company.getId()}}">Assign</a>
+                <a th:href="@{'/customer/assign/edit/' + ${company.getId()}}">Edit</a>
+                <a th:href="@{'/customer/assign/delete/' + ${company.getId()}}">Delete</a>
             </td>
         </tr>
         </tbody>
