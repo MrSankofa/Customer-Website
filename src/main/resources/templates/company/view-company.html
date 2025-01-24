@@ -8,8 +8,8 @@
 <div align="center">
     <h1>Company List</h1>
     <br/><br/>
-    <a th:href="@{/customer/new}">Add New Customer</a>
-    <a th:href="@{/company/new}">Add New Finance</a>
+    <a th:href="@{/customer/new/page}">Add New Customer</a>
+    <a th:href="@{/company/new/page}">Add New Company</a>
     <a th:href="@{/customer/page}">View Customers</a>
 
 
@@ -43,7 +43,7 @@
             <td><!-- actions -->
                 <a th:href="@{'/customer/assign/page' + ${company.getId()}}">Assign</a>
                 <a th:href="@{'/customer/edit/page' + ${company.getId()}}">Edit</a>
-                <a th:href="@{'/customer/delete' + ${company.getId()}}">Delete</a>
+                <a th:href="@{'/customer/assign/delete' + ${company.getId()}}">Delete</a>
             </td>
         </tr>
         </tbody>

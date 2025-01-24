@@ -32,12 +32,12 @@ public class FinanceCompanyController {
     FinanceCompany financeCompany = new FinanceCompany();
 
     model.addAttribute("financeCompany", financeCompany);
-    return "new-finance";
+    return "/company/new-company";
   }
 
   @GetMapping("/assign/create/{id}")
   public ModelAndView assignFinancePage(@PathVariable(name = "id") Long id) {
-    ModelAndView modelAndView = new ModelAndView("assign-finance");
+    ModelAndView modelAndView = new ModelAndView("company/assign-company");
     FinanceCompany financeCompany = new FinanceCompany();
 
     Customer customer = customerService.getCustomer(id);
@@ -51,7 +51,29 @@ public class FinanceCompanyController {
     List<FinanceCompany> companies = financeCompanyService.findAllFinanceCompanies();
 
     model.addAttribute("companies", companies);
-    return "view-finance";
+    return "/company/view-company";
+  }
+
+  @PostMapping("/save")
+  public String saveFinanceCompany(
+      @Valid @ModelAttribute("financeCompany") FinanceCompany financeCompany,
+      BindingResult bindingResult,
+      RedirectAttributes redirectAttributes) {
+
+    if (bindingResult.hasErrors()) {
+      // If validation errors exist, redirect back with an error message
+      redirectAttributes.addFlashAttribute("errorMessage", "Failed to save the finance company. Please check your input.");
+      return "redirect:/company/page"; // Adjust to the appropriate page where the form is shown
+    }
+
+    try {
+      financeCompanyService.saveFinanceCompany(financeCompany);
+      redirectAttributes.addFlashAttribute("successMessage", "Finance company saved successfully.");
+      return "redirect:/company/page"; // Redirect to the index page or wherever appropriate
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("errorMessage", "An error occurred: " + e.getMessage());
+      return "redirect:/company/page"; // Redirect to the same page with the error message
+    }
   }
 
   @GetMapping("/{id}")
@@ -71,28 +93,6 @@ public class FinanceCompanyController {
       return ResponseEntity.ok(financeCompanyService.findAllFinanceCompanies());
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    }
-  }
-
-  @PostMapping("/save")
-  public String saveFinanceCompany(
-      @Valid @ModelAttribute("financeCompany") FinanceCompany financeCompany,
-      BindingResult bindingResult,
-      RedirectAttributes redirectAttributes) {
-
-    if (bindingResult.hasErrors()) {
-      // If validation errors exist, redirect back with an error message
-      redirectAttributes.addFlashAttribute("errorMessage", "Failed to save the finance company. Please check your input.");
-      return "redirect:/"; // Adjust to the appropriate page where the form is shown
-    }
-
-    try {
-      financeCompanyService.saveFinanceCompany(financeCompany);
-      redirectAttributes.addFlashAttribute("successMessage", "Finance company saved successfully.");
-      return "redirect:/"; // Redirect to the index page or wherever appropriate
-    } catch (Exception e) {
-      redirectAttributes.addFlashAttribute("errorMessage", "An error occurred: " + e.getMessage());
-      return "redirect:/"; // Redirect to the same page with the error message
     }
   }
 
