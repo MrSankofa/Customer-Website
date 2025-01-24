@@ -34,12 +34,12 @@ public class CustomerController {
     Customer customer = new Customer();
     model.addAttribute("customer", customer);
 
-    return "new-customer";
+    return "customer/new-customer";
   }
 
   @GetMapping("/edit/{id}")
   public ModelAndView showEditCustomerPage(@PathVariable(name ="id") Long id) {
-    ModelAndView modelAndView = new ModelAndView("edit-customer");
+    ModelAndView modelAndView = new ModelAndView("customer/edit-customer");
     Customer customer = customerService.getCustomer(id);
 
     modelAndView.addObject("customer", customer);
@@ -50,7 +50,6 @@ public class CustomerController {
   @GetMapping("/assign/create/{id}")
   public ModelAndView showCreateCustomerPage(@PathVariable(name ="id") Long id) {
     ModelAndView modelAndView = new ModelAndView("assign-customer");
-
     // TODO: get all customers
     // TODO: add an attribute for all customers for the select element options
     return modelAndView;
@@ -63,23 +62,22 @@ public class CustomerController {
       model.addAttribute("message",
           "Cannot update, customer id " + customer.getId()
               + " doesn't match id to update: " + id + ".");
-      return "error-page";
+      return "error/error";
     }
 
     customerService.saveCustomer(customer);
-    return "redirect:/";
+    return "redirect:/customer/page";
   }
 
   @RequestMapping("/delete/{id}")
   public String deleteCustomer(@PathVariable(name = "id") Long id) {
     customerService.deleteCustomer(id);
-    return "redirect:/";
+    return "redirect:/company/page";
   }
 
   @GetMapping
   @ResponseBody
   public ResponseEntity<List<Customer>> getCustomers() {
-
     return ResponseEntity.ok(customerService.findAllCustomers());
   }
 
@@ -93,15 +91,13 @@ public class CustomerController {
   // how to communicate HTML to java
   public String saveCustomer(@ModelAttribute("customer")  Customer customer) {
     customerService.saveCustomer(customer);
-    return "redirect:/";
+    return "redirect:/customer/page";
   }
 
   @PostMapping("/batch-save")
   @ResponseBody
   public ResponseEntity saveCustomer(@RequestBody final List<Customer> customers) {
-
     return ResponseEntity.ok( customerService.saveAllCustomer(customers));
-
   }
 
 }
