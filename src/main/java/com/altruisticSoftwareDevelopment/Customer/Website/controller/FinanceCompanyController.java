@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/financeCompany")
+@RequestMapping("/company")
 public class FinanceCompanyController {
 
   @Autowired
@@ -28,22 +28,30 @@ public class FinanceCompanyController {
   private CustomerService customerService;
 
   @GetMapping("/new")
-  public String newFinanceCompany(Model model) {
+  public String showNewFinancePage(Model model) {
     FinanceCompany financeCompany = new FinanceCompany();
 
     model.addAttribute("financeCompany", financeCompany);
     return "new-finance";
   }
 
-  @GetMapping("/assign/{id}")
-  public ModelAndView showNewFinancePage(@PathVariable(name = "id") Long id) {
-    ModelAndView modelAndView = new ModelAndView("new-finance");
+  @GetMapping("/assign/create/{id}")
+  public ModelAndView assignFinancePage(@PathVariable(name = "id") Long id) {
+    ModelAndView modelAndView = new ModelAndView("assign-finance");
     FinanceCompany financeCompany = new FinanceCompany();
 
     Customer customer = customerService.getCustomer(id);
     financeCompany.setCustomer(customer);
     modelAndView.addObject("financeCompany", financeCompany);
     return modelAndView;
+  }
+
+  @GetMapping("/list")
+  public String showFinanceListPage(Model model) {
+    List<FinanceCompany> companies = financeCompanyService.findAllFinanceCompanies();
+
+    model.addAttribute("companies", companies);
+    return "view-finance";
   }
 
   @GetMapping("/{id}")

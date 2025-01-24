@@ -44,4 +44,5 @@ public class CustomerControllerViewTest {
         .andExpect(model().attributeExists("customer")) // Assert "customer" is in the model
         .andExpect(model().attribute("customer", mockCustomer)); // Assert the model attribute
   }
+
 }

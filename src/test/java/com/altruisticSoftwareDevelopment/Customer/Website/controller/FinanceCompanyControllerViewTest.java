@@ -51,4 +51,11 @@ public class FinanceCompanyControllerViewTest {
         .andExpect(view().name("new-finance")) // Assert the correct view name
         .andExpect(model().attributeExists("financeCompany")); // Assert "customer" is in the model
   }
+
+  @Test
+  void testShowFinanceListPage() throws Exception {
+
+    mockMvc.perform(MockMvcRequestBuilders.get("/financeList"))
+        .andDo(MockMvcResultHandlers.print()); // Logs the details of the response to the console
+  }
 }
