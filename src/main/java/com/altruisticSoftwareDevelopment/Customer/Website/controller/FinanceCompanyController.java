@@ -35,14 +35,17 @@ public class FinanceCompanyController {
     return "/company/new-company";
   }
 
-  @GetMapping("/assign/create/{id}")
-  public ModelAndView assignFinancePage(@PathVariable(name = "id") Long id) {
-    ModelAndView modelAndView = new ModelAndView("company/assign-company");
-    FinanceCompany financeCompany = new FinanceCompany();
+  @GetMapping("/assign/page/{id}")
+  public ModelAndView showAssignCompanyPage(@PathVariable(name ="id") Long customerId) {
+    // TODO: refactor to change the getCustomer return to Optional and add exceptions for no customer
+    Customer customer = customerService.getCustomer(customerId);
 
-    Customer customer = customerService.getCustomer(id);
-    financeCompany.setCustomer(customer);
-    modelAndView.addObject("financeCompany", financeCompany);
+    ModelAndView modelAndView = new ModelAndView("company/assign-company");
+    // TODO: get all companies
+    List<FinanceCompany> companies = financeCompanyService.findAllFinanceCompanies();
+    // TODO: add an attribute for all companies for the select element options
+    modelAndView.addObject("companies", companies);
+    modelAndView.addObject("customer", customer);
     return modelAndView;
   }
 
@@ -74,6 +77,22 @@ public class FinanceCompanyController {
       redirectAttributes.addFlashAttribute("errorMessage", "An error occurred: " + e.getMessage());
       return "redirect:/company/page"; // Redirect to the same page with the error message
     }
+  }
+
+  @PostMapping("/assign")
+  public String assignCompany(@RequestParam Long customerId, @RequestParam Long companyId) {
+    System.out.println("We got the customerId: " + customerId);
+    System.out.println("We got the companyId: " + companyId);
+    FinanceCompany company = financeCompanyService.getFinanceCompany(companyId);
+
+    if(company == null) {
+      // TODO; throw no such company exception
+    } else {
+      // pass the customerId and the companyId to the service
+      customerService.assignCompany(customerId, company);
+    }
+
+    return "redirect:/customer/page";
   }
 
   @GetMapping("/{id}")

@@ -47,9 +47,9 @@ public class CustomerController {
     return modelAndView;
   }
 
-  @GetMapping("/assign/create/{id}")
-  public ModelAndView showCreateCustomerPage(@PathVariable(name ="id") Long id) {
-    ModelAndView modelAndView = new ModelAndView("assign-customer");
+  @GetMapping("/assign/page/{id}")
+  public ModelAndView showAssignCustomerPage(@PathVariable(name ="id") Long id) {
+    ModelAndView modelAndView = new ModelAndView("customer/assign-customer");
     // TODO: get all customers
     // TODO: add an attribute for all customers for the select element options
     return modelAndView;
