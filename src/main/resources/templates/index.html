@@ -43,9 +43,9 @@
             <td th:text="${customer.address}">Address</td>
             <td th:text="${customer.financeCompany?.getCompanyName() ?: 'No Finance Company'}">Finance Company</td>
             <td><!-- actions -->
-                <a th:href="@{'/company/assign/page' + ${customer.getId()}}">Assign</a>
-                <a th:href="@{'/company/edit/page' + ${customer.getId()}}">Edit</a>
-                <a th:href="@{'/company/assign/delete' + ${customer.getId()}}">Delete</a>
+                <a th:href="@{'/company/assign/page/' + ${customer.getId()}}">Assign</a>
+                <a th:href="@{'/company/edit/page/' + ${customer.getId()}}">Edit</a>
+                <a th:href="@{'/company/assign/delete/' + ${customer.getId()}}">Delete</a>
             </td>
         </tr>
         </tbody>

@@ -1,6 +1,7 @@
 package com.altruisticSoftwareDevelopment.Customer.Website.service;
 
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
+import com.altruisticSoftwareDevelopment.Customer.Website.model.FinanceCompany;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface CustomerService {
   List<Customer> saveAllCustomer(List<Customer> customers);
 
   void deleteAllCustomers();
+
+  Customer assignCompany(Long customerId, FinanceCompany company);
 }
