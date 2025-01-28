@@ -21,4 +21,9 @@ public class Company {
   @OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
   private Customer customer;
 
+  public Company removeCustomer() {
+    this.customer = null;
+    return this;
+  }
+
 }

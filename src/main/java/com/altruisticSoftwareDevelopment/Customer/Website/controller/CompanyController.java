@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -168,6 +169,27 @@ public class CompanyController {
       return ResponseEntity.ok(companyService.updateFinanceCompanyById(id, company));
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(e.getMessage());
+    }
+  }
+
+  @RequestMapping("/{companyId}/assign/remove")
+  public String removeCustomerById(@PathVariable Long companyId) {
+//    try {
+//      Company company = companyService.getFinanceCompany(companyId);
+//      company.removeCustomer();
+//      companyService.saveFinanceCompany(company);
+//
+//      return "redirect:/company/page";
+//    } catch (Exception e) {
+//      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error in removing finance company" + e.getMessage());
+//    }
+    try {
+      Customer customer = customerService.getCustomer(companyId);
+      ;
+      customerService.saveCustomer(customer.removeCompany());
+      return "redirect:/company/page";
+    } catch (Exception e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error in removing finance company" + e.getMessage());
     }
   }
 }

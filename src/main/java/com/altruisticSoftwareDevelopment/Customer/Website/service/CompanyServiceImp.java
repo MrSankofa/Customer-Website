@@ -5,6 +5,7 @@ import com.altruisticSoftwareDevelopment.Customer.Website.repository.CompanyRepo
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,26 +18,31 @@ public class CompanyServiceImp implements CompanyService {
   private CompanyRepository companyRepository;
 
   @Override
+  @Transactional
   public List<Company> findAllFinanceCompanies() {
     return companyRepository.findAll();
   }
 
   @Override
-  public Company saveFinanceCompany(Company customer) {
-    return companyRepository.save(customer);
+  @Transactional
+  public Company saveFinanceCompany(Company company) {
+    return companyRepository.save(company);
   }
 
   @Override
+  @Transactional
   public Company getFinanceCompany(Long id) {
     return companyRepository.findById(id).get();
   }
 
   @Override
+  @Transactional
   public void deleteFinanceCompany(Long id) {
     companyRepository.deleteById(id);
   }
 
   @Override
+  @Transactional
   public List<Company> saveAllFinanceCompany(List<Company> customers) {
     return companyRepository.saveAll(customers);
   }
@@ -47,6 +53,7 @@ public class CompanyServiceImp implements CompanyService {
   }
 
   @Override
+  @Transactional
   public Optional<Company> updateFinanceCompanyById(Long id, Company updatedCompany) {
     // try to retrieve the company from the db
     Company company = getFinanceCompany(id);
