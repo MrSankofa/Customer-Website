@@ -4,6 +4,7 @@ package com.altruisticSoftwareDevelopment.Customer.Website.service;
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
 import com.altruisticSoftwareDevelopment.Customer.Website.repository.CustomerRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,31 @@ public class CustomerServiceImpl implements CustomerService{
 
   @Override
   @Transactional
+  public void removeCompanyFromCustomer(Long id) {
+    Customer customer = customerRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+    customer.setCompany(null); // Break the association
+    customerRepository.save(customer); // Persist changes
+    customerRepository.flush(); // Ensure the database is updated immediately
+  }
+
+  @Override
+  @Transactional
+  public void deleteCustomerById(Long id) {
+    customerRepository.deleteById(id);
+  }
+
+  @Transactional
+  public void deleteCustomerWithCompanyCleanup(Long id) {
+    Customer customer = customerRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+    customer.setCompany(null); // Remove association with the Company
+    customerRepository.save(customer); // Save the changes
+    customerRepository.deleteById(id); // Delete the customer
+  }
+
+  @Override
+  @Transactional
   public List<Customer> saveAllCustomer(List<Customer> customers) {
     return customerRepository.saveAll(customers);
   }
@@ -79,5 +105,10 @@ public class CustomerServiceImpl implements CustomerService{
 
     // return the customer
     return customer;
+  }
+
+  @Override
+  public void flush() {
+    customerRepository.flush();;
   }
 }

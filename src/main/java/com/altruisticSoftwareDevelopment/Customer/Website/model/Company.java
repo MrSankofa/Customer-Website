@@ -2,6 +2,9 @@ package com.altruisticSoftwareDevelopment.Customer.Website.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +21,7 @@ public class Company {
   private String companyName;
   private Double loanCapacity;
 
-  @OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
+  @OneToOne(mappedBy = "company", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private Customer customer;
 
   public Company removeCustomer() {

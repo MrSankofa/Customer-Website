@@ -154,13 +154,23 @@ public class CompanyController {
   }
 
   @RequestMapping("/{companyId}/delete")
-  @ResponseBody
-  public ResponseEntity<?> deleteFinanceCompanyById(@PathVariable Long companyId) {
+  public String deleteFinanceCompanyById(@PathVariable Long companyId) {
     try {
+      Company company = companyService.getFinanceCompany(companyId);
+      Customer customer = company.getCustomer();
+
+      company.setCustomer(null);
+      customer.setCompany(null);
+
+      customerService.saveCustomer(customer);
+      companyService.saveFinanceCompany(company);
+
+      customerService.flush();;
+
       companyService.deleteFinanceCompany(companyId);
-      return ResponseEntity.ok("The finance company with id: " + companyId + " was deleted");
+      return "redirect:/company/page";
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
+      throw new RuntimeException("Error while deleting finance company: " + e.getMessage());
     }
   }
 
