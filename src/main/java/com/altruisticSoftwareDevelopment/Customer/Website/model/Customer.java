@@ -2,6 +2,8 @@ package com.altruisticSoftwareDevelopment.Customer.Website.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class Customer {
   private Integer age;
   private String address;
 
-  @OneToOne(cascade = CascadeType.ALL) // Cascade operations and enable orphan removal
+  @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumn(name = "company_id", referencedColumnName = "id")
   private Company company;
 

@@ -22,4 +22,14 @@ public interface CustomerService {
   void deleteAllCustomers();
 
   Customer assignCompany(Long customerId, Company company);
+
+  void flush();
+
+  // First transaction: remove the company association
+    void removeCompanyFromCustomer(Long id);
+
+  // Second transaction: delete the customer
+    void deleteCustomerById(Long id);
+
+    void deleteCustomerWithCompanyCleanup(Long id);
 }

@@ -29,6 +29,8 @@ public class CustomerController {
   // how to communicate java to HTML
   public String viewHomePage(Model model) {
 
+    customerService.flush();
+
     final List<Customer> customers = customerService.findAllCustomers();
 
     model.addAttribute("customers", customers);
@@ -97,10 +99,13 @@ public class CustomerController {
 
   @RequestMapping("/{id}/delete")
   public String deleteCustomer(@PathVariable(name = "id") Long id) {
-    Customer customer = customerService.getCustomer(id);
-    customer.removeCompany();
-    customerService.saveCustomer(customer);
-    customerService.deleteCustomer(id);
+    try {
+      customerService.deleteCustomerWithCompanyCleanup(id);
+
+
+    } catch (ResponseStatusException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
     return "redirect:/customer/page";
   }
 
