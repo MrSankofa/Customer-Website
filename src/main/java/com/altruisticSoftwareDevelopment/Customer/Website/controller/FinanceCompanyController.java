@@ -27,12 +27,30 @@ public class FinanceCompanyController {
   @Autowired
   private CustomerService customerService;
 
+  @GetMapping("/page")
+  public String viewCompanyHomePage(Model model) {
+    List<FinanceCompany> companies = financeCompanyService.findAllFinanceCompanies();
+
+    model.addAttribute("companies", companies);
+    return "/company/view-company";
+  }
+
   @GetMapping("/new/page")
   public String showNewFinancePage(Model model) {
     FinanceCompany financeCompany = new FinanceCompany();
 
     model.addAttribute("financeCompany", financeCompany);
     return "/company/new-company";
+  }
+
+  @GetMapping("{id}/edit/page")
+  public ModelAndView showEditCompanyPage(@PathVariable(name ="id") Long id) {
+    ModelAndView modelAndView = new ModelAndView("company/edit-company");
+    FinanceCompany company = financeCompanyService.getFinanceCompany(id);
+
+    modelAndView.addObject("company", company);
+
+    return modelAndView;
   }
 
   @GetMapping("/assign/page/{id}")
@@ -49,13 +67,7 @@ public class FinanceCompanyController {
     return modelAndView;
   }
 
-  @GetMapping("/page")
-  public String showFinanceListPage(Model model) {
-    List<FinanceCompany> companies = financeCompanyService.findAllFinanceCompanies();
 
-    model.addAttribute("companies", companies);
-    return "/company/view-company";
-  }
 
   @PostMapping("/save")
   public String saveFinanceCompany(
@@ -103,6 +115,20 @@ public class FinanceCompanyController {
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+  }
+
+  @PostMapping("/{id}/update")
+  public String updateCompany(@PathVariable(name = "id") Long id, @ModelAttribute("company") FinanceCompany company, Model model) {
+
+    if (!id.equals(company.getId())) {
+      model.addAttribute("message",
+          "Cannot update, company id " + company.getId()
+              + " doesn't match id to update: " + id + ".");
+      return "error/error";
+    }
+
+    financeCompanyService.saveFinanceCompany(company);
+    return "redirect:/company/page";
   }
 
   @GetMapping
