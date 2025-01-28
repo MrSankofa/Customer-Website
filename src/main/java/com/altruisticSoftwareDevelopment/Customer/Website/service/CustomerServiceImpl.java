@@ -70,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService{
     if (customer == null) {
       // throw not such customer exception
     } else {
-      // add the company to the customer
+      // add the company to the customer.
       customer.setFinanceCompany(company);
       // add the customer to the company
       company.setCustomer(customer);
