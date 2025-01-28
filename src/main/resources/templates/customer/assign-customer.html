@@ -28,7 +28,7 @@
 
         <h4>Companies List</h4>
         <input type="hidden" name="companyId" th:value="${company.getId()}">
-        <select th:name="companyId">
+        <select th:name="customerId">
             <option th:if="${customers.size() == 0}" value="">No Customers</option>
             <option value="" th:each="customer : ${customers}" th:value="${customer.getId()}">
                 <span th:text="${customer.toString()}"></span>
