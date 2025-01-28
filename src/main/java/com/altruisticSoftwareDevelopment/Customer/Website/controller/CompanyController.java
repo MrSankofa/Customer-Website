@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -58,9 +59,11 @@ public class CompanyController {
   public ModelAndView showAssignCompanyPage(@PathVariable(name ="id") Long customerId) {
       ModelAndView modelAndView = new ModelAndView("customer/assign-customer");
       Company company = companyService.getFinanceCompany(customerId);
-    // TODO: get all customers
-    List<Customer> customers = customerService.findAllCustomers();
-    // TODO: add an attribute for all customers for the select element options
+
+    List<Customer> customers = customerService.findAllCustomers().stream()
+        .filter( customerFilter -> customerFilter.getCompany() == null)
+        .toList();
+
     modelAndView.addObject("customers", customers);
     modelAndView.addObject("company", company);
     return modelAndView;
