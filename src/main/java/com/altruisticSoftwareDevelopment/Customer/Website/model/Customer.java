@@ -22,13 +22,13 @@ public class Customer {
   private Integer age;
   private String address;
 
-  @OneToOne(cascade = CascadeType.ALL) // Cascade operations and enable orphan removal
+  @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = false)
   @JoinColumn(name = "company_id", referencedColumnName = "id")
   private Company company;
 
 
   public Customer removeCompany() {
-    this.company = null;
+    this.company = null;  // Detach the company before deleting the customer
     return this;
   }
 

@@ -157,6 +157,8 @@ public class CompanyController {
   @ResponseBody
   public ResponseEntity<?> deleteFinanceCompanyById(@PathVariable Long companyId) {
     try {
+      Company company = companyService.getFinanceCompany(companyId);
+      company.removeCustomer();
       companyService.deleteFinanceCompany(companyId);
       return ResponseEntity.ok("The finance company with id: " + companyId + " was deleted");
     } catch (Exception e) {
