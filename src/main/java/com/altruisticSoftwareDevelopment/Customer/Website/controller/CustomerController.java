@@ -37,7 +37,7 @@ public class CustomerController {
     return "customer/new-customer";
   }
 
-  @GetMapping("/edit/{id}")
+  @GetMapping("{id}/edit/page")
   public ModelAndView showEditCustomerPage(@PathVariable(name ="id") Long id) {
     ModelAndView modelAndView = new ModelAndView("customer/edit-customer");
     Customer customer = customerService.getCustomer(id);
@@ -55,7 +55,19 @@ public class CustomerController {
     return modelAndView;
   }
 
-  @PostMapping("/update/{id}")
+  @GetMapping
+  @ResponseBody
+  public ResponseEntity<List<Customer>> getCustomers() {
+    return ResponseEntity.ok(customerService.findAllCustomers());
+  }
+
+  @PostMapping
+  @ResponseBody
+  public ResponseEntity<Customer> createCustomer(@RequestBody final Customer customer) {
+    return ResponseEntity.ok(customerService.saveCustomer(customer));
+  }
+
+  @PostMapping("/{id}/update")
   public String updateCustomer(@PathVariable(name = "id") Long id, @ModelAttribute("customer") Customer customer, Model model) {
 
     if (!id.equals(customer.getId())) {
@@ -69,22 +81,10 @@ public class CustomerController {
     return "redirect:/customer/page";
   }
 
-  @RequestMapping("/delete/{id}")
+  @RequestMapping("/{id}/delete")
   public String deleteCustomer(@PathVariable(name = "id") Long id) {
     customerService.deleteCustomer(id);
-    return "redirect:/company/page";
-  }
-
-  @GetMapping
-  @ResponseBody
-  public ResponseEntity<List<Customer>> getCustomers() {
-    return ResponseEntity.ok(customerService.findAllCustomers());
-  }
-
-  @PostMapping
-  @ResponseBody
-  public ResponseEntity<Customer> createCustomer(@RequestBody final Customer customer) {
-    return ResponseEntity.ok(customerService.saveCustomer(customer));
+    return "redirect:/customer/page";
   }
 
   @PostMapping("/save")
