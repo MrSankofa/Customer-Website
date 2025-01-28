@@ -1,7 +1,8 @@
 package com.altruisticSoftwareDevelopment.Customer.Website.service;
 
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
-import com.altruisticSoftwareDevelopment.Customer.Website.model.FinanceCompany;
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface CustomerService {
 
   void deleteAllCustomers();
 
-  Customer assignCompany(Long customerId, FinanceCompany company);
+  Customer assignCompany(Long customerId, Company company);
 }

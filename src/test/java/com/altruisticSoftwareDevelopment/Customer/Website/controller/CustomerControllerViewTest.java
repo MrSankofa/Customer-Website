@@ -1,8 +1,9 @@
 package com.altruisticSoftwareDevelopment.Customer.Website.controller;
 
 
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
-import com.altruisticSoftwareDevelopment.Customer.Website.model.FinanceCompany;
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
 import com.altruisticSoftwareDevelopment.Customer.Website.service.CustomerService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -33,7 +34,7 @@ public class CustomerControllerViewTest {
     Customer mockCustomer = new Customer();
     mockCustomer.setId(customerId);
     mockCustomer.setFullName("John Doe");
-    mockCustomer.setFinanceCompany(new FinanceCompany());
+    mockCustomer.setFinanceCompany(new Company());
 
     Mockito.when(customerService.getCustomer(customerId)).thenReturn(mockCustomer);
 

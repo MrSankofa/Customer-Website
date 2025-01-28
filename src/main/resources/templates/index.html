@@ -41,11 +41,12 @@
             <td th:text="${customer.emailAddress}">Email Address</td>
             <td th:text="${customer.age}">Age</td>
             <td th:text="${customer.address}">Address</td>
-            <td th:text="${customer.financeCompany?.getCompanyName() ?: 'No Finance Company'}">Finance Company</td>
+            <td th:text="${customer.company?.getCompanyName() ?: 'No Finance Company'}">Finance Company</td>
             <td><!-- actions -->
-                <a th:href="@{'/company/assign/page/' + ${customer.getId()}}">Assign</a>
-                <a th:href="@{'/company/edit/page/' + ${customer.getId()}}">Edit</a>
-                <a th:href="@{'/company/assign/delete/' + ${customer.getId()}}">Delete</a>
+                <a th:href="@{'/customer/' + ${customer.getId()} + '/edit/page'}">Edit</a>
+                <a th:href="@{'/customer/' + ${customer.getId()} + '/delete'}">Delete</a>
+                <a th:if="${customer.company?.getCompanyName() == null}" th:href="@{'/customer/' + ${customer.getId()} + '/assign/page'}">Assign</a>
+                <a th:if="${customer.company?.getCompanyName()}" th:href="@{'/customer/' + ${customer.getId()} + '/assign/remove'}">Remove</a>
             </td>
         </tr>
         </tbody>

@@ -1,15 +1,14 @@
 package com.altruisticSoftwareDevelopment.Customer.Website.controller;
 
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
-import com.altruisticSoftwareDevelopment.Customer.Website.model.FinanceCompany;
 import com.altruisticSoftwareDevelopment.Customer.Website.service.CustomerService;
-import com.altruisticSoftwareDevelopment.Customer.Website.service.FinanceCompanyService;
+import com.altruisticSoftwareDevelopment.Customer.Website.service.CompanyService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,9 +19,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 
 
-@WebMvcTest(controllers = FinanceCompanyController.class)
-@ContextConfiguration(classes = FinanceCompanyController.class)
-public class FinanceCompanyControllerViewTest {
+@WebMvcTest(controllers = CompanyController.class)
+@ContextConfiguration(classes = CompanyController.class)
+public class CompanyControllerViewTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -31,7 +30,7 @@ public class FinanceCompanyControllerViewTest {
   private CustomerService customerService; // Mocked service dependency
 
   @MockBean
-  private FinanceCompanyService financeCompanyService;
+  private CompanyService companyService;
 
   @Test
   void testShowAssignFinanceCompanyPage() throws Exception {
@@ -40,7 +39,7 @@ public class FinanceCompanyControllerViewTest {
     Customer mockCustomer = new Customer();
     mockCustomer.setId(customerId);
     mockCustomer.setFullName("John Doe");
-    mockCustomer.setFinanceCompany(new FinanceCompany());
+    mockCustomer.setCompany(new Company());
 
     Mockito.when(customerService.getCustomer(customerId)).thenReturn(mockCustomer);
 

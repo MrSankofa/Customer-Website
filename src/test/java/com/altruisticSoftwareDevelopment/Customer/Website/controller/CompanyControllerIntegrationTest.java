@@ -1,7 +1,7 @@
 package com.altruisticSoftwareDevelopment.Customer.Website.controller;
 
-import com.altruisticSoftwareDevelopment.Customer.Website.model.FinanceCompany;
-import com.altruisticSoftwareDevelopment.Customer.Website.repository.FinanceCompanyRepository;
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
+import com.altruisticSoftwareDevelopment.Customer.Website.repository.CompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +17,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class FinanceCompanyControllerIntegrationTest {
+class CompanyControllerIntegrationTest {
 
   @Autowired
   private TestRestTemplate restTemplate;
 
   @Autowired
-  private FinanceCompanyRepository financeCompanyRepository;
+  private CompanyRepository companyRepository;
 
   @BeforeEach
   void setup() {
-    financeCompanyRepository.deleteAll();
-    financeCompanyRepository.save(FinanceCompany.builder()
+    companyRepository.deleteAll();
+    companyRepository.save(Company.builder()
         .companyName("Test Company")
         .loanCapacity(500000.0)
         .build());
@@ -36,11 +36,11 @@ class FinanceCompanyControllerIntegrationTest {
 
   @Test
   void findAllFinanceCompanies() {
-    ResponseEntity<List<FinanceCompany>> response = restTemplate.exchange(
+    ResponseEntity<List<Company>> response = restTemplate.exchange(
         "/financeCompany",
         HttpMethod.GET,
         null,
-        new ParameterizedTypeReference<List<FinanceCompany>>() {}
+        new ParameterizedTypeReference<List<Company>>() {}
     );
 
     assertEquals(HttpStatus.OK, response.getStatusCode());

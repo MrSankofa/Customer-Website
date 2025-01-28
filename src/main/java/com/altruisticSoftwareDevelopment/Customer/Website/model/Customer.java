@@ -23,7 +23,13 @@ public class Customer {
   private String address;
 
   @OneToOne(cascade = CascadeType.ALL) // Cascade operations and enable orphan removal
-  @JoinColumn(name = "finance_company_id", referencedColumnName = "id")
-  private FinanceCompany financeCompany;
+  @JoinColumn(name = "company_id", referencedColumnName = "id")
+  private Company company;
+
+
+  public Customer removeCompany() {
+    this.company = null;
+    return this;
+  }
 
 }
