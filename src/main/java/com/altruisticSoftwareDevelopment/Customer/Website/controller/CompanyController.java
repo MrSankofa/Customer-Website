@@ -1,9 +1,8 @@
 package com.altruisticSoftwareDevelopment.Customer.Website.controller;
 
-import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
-import com.altruisticSoftwareDevelopment.Customer.Website.model.FinanceCompany;
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
 import com.altruisticSoftwareDevelopment.Customer.Website.service.CustomerService;
-import com.altruisticSoftwareDevelopment.Customer.Website.service.FinanceCompanyService;
+import com.altruisticSoftwareDevelopment.Customer.Website.service.CompanyService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,51 +18,45 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/company")
-public class FinanceCompanyController {
+public class CompanyController {
 
   @Autowired
-  private FinanceCompanyService financeCompanyService;
+  private CompanyService companyService;
 
   @Autowired
   private CustomerService customerService;
 
   @GetMapping("/page")
   public String viewCompanyHomePage(Model model) {
-    List<FinanceCompany> companies = financeCompanyService.findAllFinanceCompanies();
+    List<Company> companies = companyService.findAllFinanceCompanies();
 
     model.addAttribute("companies", companies);
     return "/company/view-company";
   }
 
   @GetMapping("/new/page")
-  public String showNewFinancePage(Model model) {
-    FinanceCompany financeCompany = new FinanceCompany();
+  public String showNewCompanyPage(Model model) {
+    Company company = new Company();
 
-    model.addAttribute("financeCompany", financeCompany);
+    model.addAttribute("company", company);
     return "/company/new-company";
   }
 
   @GetMapping("{id}/edit/page")
   public ModelAndView showEditCompanyPage(@PathVariable(name ="id") Long id) {
     ModelAndView modelAndView = new ModelAndView("company/edit-company");
-    FinanceCompany company = financeCompanyService.getFinanceCompany(id);
+    Company company = companyService.getFinanceCompany(id);
 
     modelAndView.addObject("company", company);
 
     return modelAndView;
   }
 
-  @GetMapping("/assign/page/{id}")
+  @GetMapping("/{id}/assign/page")
   public ModelAndView showAssignCompanyPage(@PathVariable(name ="id") Long customerId) {
-    // TODO: refactor to change the getCustomer return to Optional and add exceptions for no customer
-    Customer customer = customerService.getCustomer(customerId);
-
-    ModelAndView modelAndView = new ModelAndView("company/assign-company");
-    // TODO: get all companies
-    List<FinanceCompany> companies = financeCompanyService.findAllFinanceCompanies();
-    // TODO: add an attribute for all companies for the select element options
-    modelAndView.addObject("companies", companies);
-    modelAndView.addObject("customer", customer);
+      ModelAndView modelAndView = new ModelAndView("customer/assign-customer");
+    // TODO: get all customers
+    // TODO: add an attribute for all customers for the select element options
     return modelAndView;
   }
 
@@ -71,7 +64,7 @@ public class FinanceCompanyController {
 
   @PostMapping("/save")
   public String saveFinanceCompany(
-      @Valid @ModelAttribute("financeCompany") FinanceCompany financeCompany,
+      @Valid @ModelAttribute("company") Company company,
       BindingResult bindingResult,
       RedirectAttributes redirectAttributes) {
 
@@ -82,7 +75,7 @@ public class FinanceCompanyController {
     }
 
     try {
-      financeCompanyService.saveFinanceCompany(financeCompany);
+      companyService.saveFinanceCompany(company);
       redirectAttributes.addFlashAttribute("successMessage", "Finance company saved successfully.");
       return "redirect:/company/page"; // Redirect to the index page or wherever appropriate
     } catch (Exception e) {
@@ -95,7 +88,7 @@ public class FinanceCompanyController {
   public String assignCompany(@RequestParam Long customerId, @RequestParam Long companyId) {
     System.out.println("We got the customerId: " + customerId);
     System.out.println("We got the companyId: " + companyId);
-    FinanceCompany company = financeCompanyService.getFinanceCompany(companyId);
+    Company company = companyService.getFinanceCompany(companyId);
 
     if(company == null) {
       // TODO; throw no such company exception
@@ -111,14 +104,14 @@ public class FinanceCompanyController {
   @ResponseBody
   public ResponseEntity<?> findFinanceCompanyById(@PathVariable Long id) {
     try {
-      return ResponseEntity.ok(financeCompanyService.getFinanceCompany(id));
+      return ResponseEntity.ok(companyService.getFinanceCompany(id));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
   }
 
   @PostMapping("/{id}/update")
-  public String updateCompany(@PathVariable(name = "id") Long id, @ModelAttribute("company") FinanceCompany company, Model model) {
+  public String updateCompany(@PathVariable(name = "id") Long id, @ModelAttribute("company") Company company, Model model) {
 
     if (!id.equals(company.getId())) {
       model.addAttribute("message",
@@ -127,7 +120,7 @@ public class FinanceCompanyController {
       return "error/error";
     }
 
-    financeCompanyService.saveFinanceCompany(company);
+    companyService.saveFinanceCompany(company);
     return "redirect:/company/page";
   }
 
@@ -135,7 +128,7 @@ public class FinanceCompanyController {
   @ResponseBody
   public ResponseEntity<?> findAllFinanceCompanies() {
     try {
-      return ResponseEntity.ok(financeCompanyService.findAllFinanceCompanies());
+      return ResponseEntity.ok(companyService.findAllFinanceCompanies());
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
@@ -143,30 +136,31 @@ public class FinanceCompanyController {
 
   @PostMapping("/bulk")
   @ResponseBody
-  public ResponseEntity<?> saveAllFinanceCompany(@Valid @RequestBody List<FinanceCompany> financeCompanies) {
+  public ResponseEntity<?> saveAllFinanceCompany(@Valid @RequestBody List<Company> financeCompanies) {
     try {
-      return ResponseEntity.status(HttpStatus.CREATED).body(financeCompanyService.saveAllFinanceCompany(financeCompanies));
+      return ResponseEntity.status(HttpStatus.CREATED).body(companyService.saveAllFinanceCompany(financeCompanies));
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
   }
 
-  @DeleteMapping("/{id}")
+  @RequestMapping("/{companyId}/delete")
   @ResponseBody
-  public ResponseEntity<?> deleteFinanceCompanyById(@PathVariable Long id) {
+  public ResponseEntity<?> deleteFinanceCompanyById(@PathVariable Long companyId) {
     try {
-      financeCompanyService.deleteFinanceCompany(id);
-      return ResponseEntity.ok("The finance company with id: " + id + " was deleted");
+      companyService.deleteFinanceCompany(companyId);
+      return ResponseEntity.ok("The finance company with id: " + companyId + " was deleted");
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
   }
+
 
   @PutMapping("/{id}")
   @ResponseBody
-  public ResponseEntity<?> updateFinanceCompany(@PathVariable Long id, @Valid @RequestBody FinanceCompany financeCompany) {
+  public ResponseEntity<?> updateFinanceCompany(@PathVariable Long id, @Valid @RequestBody Company company) {
     try {
-      return ResponseEntity.ok(financeCompanyService.updateFinanceCompanyById(id, financeCompany));
+      return ResponseEntity.ok(companyService.updateFinanceCompanyById(id, company));
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     }

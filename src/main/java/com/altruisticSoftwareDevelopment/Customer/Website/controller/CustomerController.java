@@ -1,12 +1,16 @@
 package com.altruisticSoftwareDevelopment.Customer.Website.controller;
 
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
+import com.altruisticSoftwareDevelopment.Customer.Website.service.CompanyService;
 import com.altruisticSoftwareDevelopment.Customer.Website.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -17,6 +21,9 @@ public class CustomerController {
 
   @Autowired
   CustomerService customerService;
+  
+  @Autowired
+  CompanyService companyService;
 
   @GetMapping("/page")
   // how to communicate java to HTML
@@ -47,11 +54,18 @@ public class CustomerController {
     return modelAndView;
   }
 
-  @GetMapping("/assign/page/{id}")
+  @GetMapping("/{id}/assign/page")
   public ModelAndView showAssignCustomerPage(@PathVariable(name ="id") Long id) {
-    ModelAndView modelAndView = new ModelAndView("customer/assign-customer");
-    // TODO: get all customers
-    // TODO: add an attribute for all customers for the select element options
+
+    // TODO: refactor to change the getCustomer return to Optional and add exceptions for no customer
+    Customer customer = customerService.getCustomer(id);
+
+    ModelAndView modelAndView = new ModelAndView("company/assign-company");
+    // TODO: get all companies
+    List<Company> companies = companyService.findAllFinanceCompanies();
+    // TODO: add an attribute for all companies for the select element options
+    modelAndView.addObject("companies", companies);
+    modelAndView.addObject("customer", customer);
     return modelAndView;
   }
 
@@ -85,6 +99,18 @@ public class CustomerController {
   public String deleteCustomer(@PathVariable(name = "id") Long id) {
     customerService.deleteCustomer(id);
     return "redirect:/customer/page";
+  }
+
+  @RequestMapping("/{customerId}/assign/remove")
+  public String removeFinanceCompanyById(@PathVariable Long customerId) {
+    try {
+      Customer customer = customerService.getCustomer(customerId);
+      ;
+      customerService.saveCustomer(customer.removeCompany());
+      return "redirect:/customer/page";
+    } catch (Exception e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error in removing finance company" + e.getMessage());
+    }
   }
 
   @PostMapping("/save")

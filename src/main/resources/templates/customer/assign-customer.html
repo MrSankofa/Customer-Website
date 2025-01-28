@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Company</title>
+</head>
+<body>
+<div align="center">
+    <h1 >Assign Company To <span th:text="${customer.fullName}"></span></h1>
+    <br>
+
+    <div>
+        <a th:href="@{/company/new/page}">Add New Company</a>
+    </div>
+    <br>
+    <div>
+        <span> <strong>Customer Name:</strong> </span>
+        <span th:text="${customer.getFullName()}"></span>
+    </div>
+
+    <div>
+        <span> <strong>Customer Email:</strong> </span>
+        <span th:text="${customer.getEmailAddress()}"></span>
+    </div>
+
+    <form action="#" th:action="@{/company/assign}" method="post">
+
+        <h4>Companies List</h4>
+        <input type="hidden" name="customerId" th:value="${customer.getId()}">
+        <select th:name="companyId">
+            <option th:if="${companies.size() == 0}" value="">No Companies</option>
+            <option value="" th:each="company : ${companies}" th:value="${company.getId()}">
+                <span th:text="${company.toString()}"></span>
+            </option>
+        </select>
+
+        <button type="submit" th:disabled="${companies.size() == 0}"> Assign</button>
+    </form>
+
+
+
+</div>
+
+
+</body>
+</html>

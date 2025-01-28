@@ -2,7 +2,7 @@ package com.altruisticSoftwareDevelopment.Customer.Website.service;
 
 
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
-import com.altruisticSoftwareDevelopment.Customer.Website.model.FinanceCompany;
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
 import com.altruisticSoftwareDevelopment.Customer.Website.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +63,7 @@ public class CustomerServiceImpl implements CustomerService{
 
   @Override
   @Transactional
-  public Customer assignCompany(Long customerId, FinanceCompany company) {
+  public Customer assignCompany(Long customerId, Company company) {
 
     Customer customer = customerRepository.findById(customerId).orElse(null);
     // get company
@@ -71,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService{
       // throw not such customer exception
     } else {
       // add the company to the customer.
-      customer.setFinanceCompany(company);
+      customer.setCompany(company);
       // add the customer to the company
       company.setCustomer(customer);
       customerRepository.save(customer);

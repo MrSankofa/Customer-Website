@@ -1,7 +1,7 @@
 package com.altruisticSoftwareDevelopment.Customer.Website;
 
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
-import com.altruisticSoftwareDevelopment.Customer.Website.model.FinanceCompany;
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
 import com.altruisticSoftwareDevelopment.Customer.Website.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

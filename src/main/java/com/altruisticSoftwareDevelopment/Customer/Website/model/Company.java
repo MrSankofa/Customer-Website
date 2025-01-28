@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @Builder
 @ToString(exclude = {"customer", "id"})
-public class FinanceCompany {
+public class Company {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class FinanceCompany {
   private String companyName;
   private Double loanCapacity;
 
-  @OneToOne(mappedBy = "financeCompany", cascade = CascadeType.ALL)
+  @OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
   private Customer customer;
 
 }
