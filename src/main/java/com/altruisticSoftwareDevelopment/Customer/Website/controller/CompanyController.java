@@ -1,6 +1,7 @@
 package com.altruisticSoftwareDevelopment.Customer.Website.controller;
 
 import com.altruisticSoftwareDevelopment.Customer.Website.model.Company;
+import com.altruisticSoftwareDevelopment.Customer.Website.model.Customer;
 import com.altruisticSoftwareDevelopment.Customer.Website.service.CustomerService;
 import com.altruisticSoftwareDevelopment.Customer.Website.service.CompanyService;
 import jakarta.validation.Valid;
@@ -55,8 +56,12 @@ public class CompanyController {
   @GetMapping("/{id}/assign/page")
   public ModelAndView showAssignCompanyPage(@PathVariable(name ="id") Long customerId) {
       ModelAndView modelAndView = new ModelAndView("customer/assign-customer");
+      Company company = companyService.getFinanceCompany(customerId);
     // TODO: get all customers
+    List<Customer> customers = customerService.findAllCustomers();
     // TODO: add an attribute for all customers for the select element options
+    modelAndView.addObject("customers", customers);
+    modelAndView.addObject("company", company);
     return modelAndView;
   }
 

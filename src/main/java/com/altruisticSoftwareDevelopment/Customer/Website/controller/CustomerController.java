@@ -113,6 +113,22 @@ public class CustomerController {
     }
   }
 
+  @PostMapping("/assign")
+  public String assignCustomer(@RequestParam Long customerId, @RequestParam Long companyId) {
+    System.out.println("We got the customerId: " + customerId);
+    System.out.println("We got the companyId: " + companyId);
+    Company company = companyService.getFinanceCompany(companyId);
+
+    if(company == null) {
+      // TODO; throw no such company exception
+    } else {
+      // pass the customerId and the companyId to the service
+      customerService.assignCompany(customerId, company);
+    }
+
+    return "redirect:/company/page";
+  }
+
   @PostMapping("/save")
   // how to communicate HTML to java
   public String saveCustomer(@ModelAttribute("customer")  Customer customer) {
