@@ -98,16 +98,22 @@ public class CustomerController {
   @RequestMapping("/{id}/delete")
   public String deleteCustomer(@PathVariable(name = "id") Long id) {
     try {
+      // Retrieve the customer and associated company
       Customer customer = customerService.getCustomer(id);
       Company company = customer.getCompany();
 
-      customer.setCompany(null);
-      company.setCustomer(null);
+      // Break the bidirectional relationship
+      if (company != null) {
+        company.setCustomer(null);
+        customer.setCompany(null);
+
+        // Save both entities to persist the changes
+        companyService.saveFinanceCompany(company);
+      }
 
       customerService.saveCustomer(customer);
-      companyService.saveFinanceCompany(company);
 
-      customerService.flush();
+      // Delete the customer
       customerService.deleteCustomer(id);
 
     } catch (ResponseStatusException e) {
