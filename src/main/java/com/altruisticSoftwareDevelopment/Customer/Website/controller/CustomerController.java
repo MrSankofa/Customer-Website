@@ -62,7 +62,7 @@ public class CustomerController {
 
     ModelAndView modelAndView = new ModelAndView("company/assign-company");
     // TODO: get all companies
-    List<Company> companies = companyService.findAllFinanceCompanies();
+    List<Company> companies = companyService.findAllFinanceCompanies().stream().filter( companyFilter -> companyFilter.getCustomer() == null).toList();
     // TODO: add an attribute for all companies for the select element options
     modelAndView.addObject("companies", companies);
     modelAndView.addObject("customer", customer);
