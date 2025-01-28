@@ -22,7 +22,7 @@ public class Customer {
   private Integer age;
   private String address;
 
-  @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = false)
+  @OneToOne(cascade = CascadeType.ALL) // Cascade operations and enable orphan removal
   @JoinColumn(name = "company_id", referencedColumnName = "id")
   private Company company;
 

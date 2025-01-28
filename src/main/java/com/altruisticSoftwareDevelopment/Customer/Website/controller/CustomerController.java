@@ -99,6 +99,7 @@ public class CustomerController {
   public String deleteCustomer(@PathVariable(name = "id") Long id) {
     Customer customer = customerService.getCustomer(id);
     customer.removeCompany();
+    customerService.saveCustomer(customer);
     customerService.deleteCustomer(id);
     return "redirect:/customer/page";
   }

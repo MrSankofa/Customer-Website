@@ -159,6 +159,7 @@ public class CompanyController {
     try {
       Company company = companyService.getFinanceCompany(companyId);
       company.removeCustomer();
+      companyService.saveFinanceCompany(company);
       companyService.deleteFinanceCompany(companyId);
       return ResponseEntity.ok("The finance company with id: " + companyId + " was deleted");
     } catch (Exception e) {
