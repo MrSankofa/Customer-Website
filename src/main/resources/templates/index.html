@@ -45,8 +45,8 @@
             <td><!-- actions -->
                 <a th:href="@{'/customer/' + ${customer.getId()} + '/edit/page'}">Edit</a>
                 <a th:href="@{'/customer/' + ${customer.getId()} + '/delete'}">Delete</a>
-                <a th:href="@{'/customer/' + ${customer.getId()} + '/assign/page'}">Assign</a>
-                <a th:href="@{'/customer/' + ${customer.getId()} + '/assign/remove'}">Remove</a>
+                <a th:if="${customer.company?.getCompanyName() == null}" th:href="@{'/customer/' + ${customer.getId()} + '/assign/page'}">Assign</a>
+                <a th:if="${customer.company?.getCompanyName()}" th:href="@{'/customer/' + ${customer.getId()} + '/assign/remove'}">Remove</a>
             </td>
         </tr>
         </tbody>
