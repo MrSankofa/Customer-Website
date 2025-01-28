@@ -183,6 +183,8 @@ public class CompanyController {
 //    } catch (Exception e) {
 //      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error in removing finance company" + e.getMessage());
 //    }
+    // TODO: interesting point I need to review is when I tried to save from the company perspective I could not make the update
+    // but when I switched it to the customer perspective I was able to make the change.
     try {
       Customer customer = customerService.getCustomer(companyId);
       ;
